@@ -6,13 +6,17 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'HomeView',
   components: {
     HelloWorld
+  },
+  beforeCreate () {
+    if (!this.$store.state.auth.loggedIn) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
