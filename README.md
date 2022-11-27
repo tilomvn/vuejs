@@ -1,4 +1,8 @@
 # Vue Js
+### Compiles and hot-reloads for development
+```
+npm install vuex
+```
 
 ### Compiles and hot-reloads for development
 ```

@@ -43,7 +43,6 @@ export default {
         if (error.response.status === 400) {
           this.errorMessage = 'Bad Request'
         }
-        console.log(error)
       })
     }
   },
