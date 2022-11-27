@@ -1,9 +1,4 @@
-# product-and-cart
-
-## Project setup
-```
-npm install
-```
+# Vue Js
 
 ### Compiles and hot-reloads for development
 ```
@@ -21,4 +16,4 @@ npm run lint
 ```
 
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+User Session + CORS Config
