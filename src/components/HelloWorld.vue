@@ -29,14 +29,13 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
   </div>
+  <button @click="sessionValidation()">Log out</button>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  props: ['msg', 'sessionValidation']
 }
 </script>
 

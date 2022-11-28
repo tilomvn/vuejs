@@ -4,10 +4,19 @@
     <router-link to="/about">About</router-link> |
     <router-link to="/login">Login</router-link>
   </nav>
-  <router-view/>
+  <router-view :sessionValidation="sessionValidation" />
 </template>
 
 <script>
+export default {
+  methods: {
+    sessionValidation () {
+      if (!this.$store.state.auth.loggedIn) {
+        this.$router.push('/login')
+      }
+    }
+  }
+}
 </script>
 
 <style>
