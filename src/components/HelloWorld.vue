@@ -33,9 +33,12 @@
 </template>
 
 <script>
+import MasterView from '@/views/MasterView.vue'
+
 export default {
+  mixins: [MasterView],
   name: 'HelloWorld',
-  props: ['msg', 'sessionValidation']
+  props: ['msg']
 }
 </script>
 

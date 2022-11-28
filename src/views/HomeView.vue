@@ -6,16 +6,14 @@
 </template>
 
 <script>
+import MasterView from './MasterView.vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
+  mixins: [MasterView],
   name: 'HomeView',
   components: {
     HelloWorld
-  },
-  props: ['sessionValidation']
-  // beforeCreate () {
-  //   sessionValidation()
-  // }
+  }
 }
 </script>
