@@ -16,8 +16,24 @@ export const auth = {
           return Promise.resolve(response.data)
         })
     },
+    registerDraft ({ commit }, user) {
+      return axios
+        .post('/radx-blockchain-ops-user/register/draft', user)
+        .then(response => {
+          commit('registerDraftSuccess', response.data)
+          return Promise.resolve(response.data)
+        })
+    },
+    register ({ commit }, firebaseToken) {
+      return axios
+        .post('/radx-blockchain-ops-user/register', firebaseToken)
+        .then(response => {
+          commit('registerSuccess')
+          return Promise.resolve(response.data)
+        })
+    },
     logout ({ commit }) {
-      commit('logout')
+      commit('logoutSuccess')
     }
   },
   mutations: {
@@ -25,19 +41,15 @@ export const auth = {
       state.loggedIn = true
       state.user = user
     },
-    loginFailure (state) {
-      state.loggedIn = false
-      state.user = null
-    },
-    logout (state) {
+    logoutSuccess (state) {
       state.loggedIn = false
       state.user = null
     },
     registerSuccess (state) {
       state.loggedIn = false
     },
-    registerFailure (state) {
-      state.loggedIn = false
+    registerDraftSuccess (state, data) {
+      console.log(data)
     }
   }
 }
