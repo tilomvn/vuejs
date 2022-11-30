@@ -1,9 +1,8 @@
 <template>
-    <form v-if="!isCompleted">
+    <form v-if="isFormStep" @submit.prevent>
         <h2>{{ title }}</h2>
         <h3 v-if="errorMessage !== ''">{{ errorMessage }}</h3>
-        <label v-if="isFormStep || isCompleted">{{ signIn }} <a @click="gotoLogin" href="#">Sign in</a></label>
-        <label v-if="isPhoneNumberVerificationStep">Verify your phone number</label>
+        <label>{{ signIn }} <a @click="gotoLogin" href="#">Sign in</a></label>
         <br/>
         <table>
           <tr>
@@ -22,23 +21,31 @@
             <td><CustomInput v-model="referralCode" inputType="text" label="Referral Code" /></td>
           </tr>
           <tr>
-            <td><button id="sign-in-button">Create Your Account</button></td>
+            <td><button @click="handleSubmit" id="sign-in-button">Create Your Account</button></td>
           </tr>
         </table>
     </form>
+    <label v-if="isPhoneNumberVerificationStep">Verify your phone number</label>
     <div v-if="isPhoneNumberVerificationStep">
-      <CustomInput v-model="otpCode" inputType="text" label="Otp Code" />
-      <button @click="completeRegistration">Complete</button>
+      <table>
+        <tr>
+          <td><CustomInput v-model="otpCode" inputType="text" label="Otp Code" /></td>
+        </tr>
+        <tr>
+          <td><button @click="completeRegistration">Complete</button></td>
+        </tr>
+      </table>
     </div>
     <div v-if="isCompleted">
       <img alt="Vue logo" src="../assets/logo.png">
-      Thank you for signing up !
+      <h2>Thank you for signing up !</h2>
+      <button @click="gotoLogin">Log in</button>
     </div>
 </template>
 
 <script>
 import CustomInput from '@/components/CustomInput.vue'
-const { RecaptchaVerifier } = require('firebase/auth')
+import { RecaptchaVerifier } from 'firebase/auth'
 
 export default {
   name: 'RegistrationView',
@@ -56,6 +63,7 @@ export default {
       isPhoneNumberVerificationStep: false,
       otpCode: '',
       appVerifier: null,
+      confirmationResult: null,
       isCompleted: false
     }
   },
@@ -67,25 +75,8 @@ export default {
         email: this.email,
         password: this.password,
         referralCode: this.referralCode
-      }).then(response => {
-        this.$store.dispatch('firebase/signInWithToken', response.data.firebaseToken).then(response => {
-          this.$store.dispatch('firebase/signInWithPhone', response.phoneNumber, this.appVerifier).then(response => {
-            window.confirmationResult = response
-            this.isPhoneNumberVerificationStep = true
-            this.isFormStep = false
-          },
-          error => this.handleError(error))
-          // this.$store.dispatch('auth/register', {
-          //   firebaseIdToken: response.idToken,
-          //   uid: response.uid
-          // }).then(response => {
-          //   this.isCompleted = true
-          // },
-          // error => this.handleError(error))
-        },
-        error => this.handleError(error))
-      },
-      (error) => this.handleError(error))
+      }).then(response => {},
+        (error) => this.handleError(error))
     },
     handleError (error) {
       console.log(error)
@@ -95,24 +86,46 @@ export default {
       }
     },
     completeRegistration () {
-      console.log(this.otpCode)
+      this.confirmationResult.confirm(this.otpCode).then(response => {
+        this.$store.dispatch('auth/register', {
+          uid: response.user.uid
+        }).then(response => {
+          this.isCompleted = true
+          this.isPhoneNumberVerificationStep = false
+        },
+        error => this.handleError(error))
+      }).catch(error => this.handleError(error))
     },
     gotoLogin () {
       this.$router.push('/login')
+    },
+    initReCaptcha () {
+      const vm = this
+      this.appVerifier = new RecaptchaVerifier('sign-in-button', {
+        size: 'invisible',
+        callback: function (response) {
+          vm.$store.dispatch('firebase/signInWithPhone', { phoneNumber: vm.phoneNumber, appVerifier: vm.appVerifier }).then(response => {
+            vm.confirmationResult = response
+            vm.isPhoneNumberVerificationStep = true
+            vm.isFormStep = false
+          },
+          error => vm.handleError(error))
+        },
+        'expired-callback': function () {
+          window.grecaptcha.reset(this.widgetId)
+        }
+      }, vm.$store.state.firebase.auth)
+      const renderCapcha = async () => {
+        await this.appVerifier.render()
+      }
+      renderCapcha()
     }
   },
   components: {
     CustomInput
   },
   mounted () {
-    window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-      size: 'invisible',
-      callback: (response) => {
-        console.log(response)
-        this.appVerifier = response
-        this.handleSubmit()
-      }
-    }, this.$store.state.firebase.auth)
+    this.initReCaptcha()
   }
 }
 </script>

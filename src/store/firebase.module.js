@@ -29,8 +29,8 @@ export const firebase = {
         return Promise.resolve(userInfo())
       })
     },
-    signInWithPhone ({ commit }, phoneNumber, recaptchaVerifier) {
-      return signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier).then(confirmationResult => {
+    signInWithPhone ({ commit }, appInfo) {
+      return signInWithPhoneNumber(auth, appInfo.phoneNumber, appInfo.appVerifier).then(confirmationResult => {
         commit('signInWithPhoneSuccess')
         return Promise.resolve(confirmationResult)
       })

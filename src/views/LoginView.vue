@@ -42,6 +42,9 @@ export default {
         this.errorMessage = 'Internal Server Error'
         if (error.response.status === 400) {
           this.errorMessage = 'Bad Request'
+        } else if (error.response.status === 401) {
+          console.log(error)
+          this.errorMessage = error.response.data.message
         }
       })
     }
