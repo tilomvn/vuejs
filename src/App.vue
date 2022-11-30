@@ -5,7 +5,7 @@
     <router-link to="/login">Login</router-link> |
     <router-link to="/register">Registration</router-link>
   </nav>
-  <router-view />
+  <router-view :sessionValidation="sessionValidation" />
 </template>
 
 <script>

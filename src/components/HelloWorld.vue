@@ -29,7 +29,7 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
   </div>
-  <button @click="sessionValidation()">Log out</button>
+  <button @click="logOut">Log out</button>
 </template>
 
 <script>
@@ -38,7 +38,13 @@ import MasterView from '@/views/MasterView.vue'
 export default {
   mixins: [MasterView],
   name: 'HelloWorld',
-  props: ['msg']
+  props: ['msg'],
+  methods: {
+    logOut () {
+      localStorage.removeItem('user')
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 

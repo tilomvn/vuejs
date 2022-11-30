@@ -1,53 +1,55 @@
 <template>
-    <form v-if="isFormStep" @submit.prevent>
-        <h2>{{ title }}</h2>
-        <h3 v-if="errorMessage !== ''">{{ errorMessage }}</h3>
-        <label>{{ signIn }} <a @click="gotoLogin" href="#">Sign in</a></label>
-        <br/>
-        <table>
-          <tr>
-            <td><CustomInput v-model="userName" inputType="text" label="User Name" /></td>
-          </tr>
-          <tr>
-            <td><CustomInput v-model="phoneNumber" inputType="text" label="Phone Number" /></td>
-          </tr>
-          <tr>
-            <td><CustomInput v-model="email" inputType="text" label="Email" /></td>
-          </tr>
-          <tr>
-            <td><CustomInput v-model="password" inputType="password" label="Password" /></td>
-          </tr>
-          <tr>
-            <td><CustomInput v-model="referralCode" inputType="text" label="Referral Code" /></td>
-          </tr>
-          <tr>
-            <td><button @click="handleSubmit" id="sign-in-button">Create Your Account</button></td>
-          </tr>
-        </table>
-    </form>
-    <label v-if="isPhoneNumberVerificationStep">Verify your phone number</label>
-    <div v-if="isPhoneNumberVerificationStep">
-      <table>
-        <tr>
-          <td><CustomInput v-model="otpCode" inputType="text" label="Otp Code" /></td>
-        </tr>
-        <tr>
-          <td><button @click="completeRegistration">Complete</button></td>
-        </tr>
-      </table>
-    </div>
-    <div v-if="isCompleted">
-      <img alt="Vue logo" src="../assets/logo.png">
-      <h2>Thank you for signing up !</h2>
-      <button @click="gotoLogin">Log in</button>
-    </div>
+  <form v-if="isFormStep" @submit.prevent>
+    <h2>{{ title }}</h2>
+    <h3 v-if="errorMessage !== ''">{{ errorMessage }}</h3>
+    <label>{{ signIn }} <a @click="gotoLogin" href="#">Sign in</a></label>
+    <br/>
+    <table>
+      <tr>
+        <td><CustomInput v-model="userName" inputType="text" label="User Name" /></td>
+      </tr>
+      <tr>
+        <td><CustomInput v-model="phoneNumber" inputType="text" label="Phone Number" /></td>
+      </tr>
+      <tr>
+        <td><CustomInput v-model="email" inputType="text" label="Email" /></td>
+      </tr>
+      <tr>
+        <td><CustomInput v-model="password" inputType="password" label="Password" /></td>
+      </tr>
+      <tr>
+        <td><CustomInput v-model="referralCode" inputType="text" label="Referral Code" /></td>
+      </tr>
+      <tr>
+        <td><button id="sign-in-button">Create Your Account</button></td>
+      </tr>
+    </table>
+  </form>
+  <label v-if="isPhoneNumberVerificationStep">Verify your phone number</label>
+  <div v-if="isPhoneNumberVerificationStep">
+    <table>
+      <tr>
+        <td><CustomInput v-model="otpCode" inputType="text" label="Otp Code" /></td>
+      </tr>
+      <tr>
+        <td><button @click="completeRegistration">Complete</button></td>
+      </tr>
+    </table>
+  </div>
+  <div v-if="isCompleted">
+    <img alt="Vue logo" src="../assets/logo.png">
+    <h2>Thank you for signing up !</h2>
+    <button @click="gotoLogin">Log in</button>
+  </div>
 </template>
 
 <script>
 import CustomInput from '@/components/CustomInput.vue'
 import { RecaptchaVerifier } from 'firebase/auth'
+import MasterView from './MasterView.vue'
 
 export default {
+  mixins: [MasterView],
   name: 'RegistrationView',
   data () {
     return {
@@ -68,21 +70,14 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
-      this.$store.dispatch('auth/registerDraft', {
-        userFullName: this.userName,
-        phoneNumber: this.phoneNumber,
-        email: this.email,
-        password: this.password,
-        referralCode: this.referralCode
-      }).then(response => {},
-        (error) => this.handleError(error))
-    },
     handleError (error) {
-      console.log(error)
       this.errorMessage = 'Internal Server Error'
       if (error.response && error.response.status === 400) {
         this.errorMessage = 'Bad Request'
+      } else if (error.response && error.response.status === 401) {
+        this.errorMessage = error.response.message
+      } else {
+        console.log(error)
       }
     },
     completeRegistration () {
@@ -104,10 +99,19 @@ export default {
       this.appVerifier = new RecaptchaVerifier('sign-in-button', {
         size: 'invisible',
         callback: function (response) {
-          vm.$store.dispatch('firebase/signInWithPhone', { phoneNumber: vm.phoneNumber, appVerifier: vm.appVerifier }).then(response => {
-            vm.confirmationResult = response
-            vm.isPhoneNumberVerificationStep = true
-            vm.isFormStep = false
+          vm.$store.dispatch('auth/registerDraft', {
+            userFullName: vm.userName,
+            phoneNumber: vm.phoneNumber,
+            email: vm.email,
+            password: vm.password,
+            referralCode: vm.referralCode
+          }).then(response => {
+            vm.$store.dispatch('firebase/signInWithPhone', { phoneNumber: vm.phoneNumber, appVerifier: vm.appVerifier }).then(response => {
+              vm.confirmationResult = response
+              vm.isPhoneNumberVerificationStep = true
+              vm.isFormStep = false
+            },
+            error => vm.handleError(error))
           },
           error => vm.handleError(error))
         },

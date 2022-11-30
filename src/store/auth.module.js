@@ -9,10 +9,23 @@ export const auth = {
       return axios
         .post('/radx-blockchain-ops-user/login', user)
         .then(response => {
-          // if (response.data.accessToken) {
-          localStorage.setItem('user', JSON.stringify(response.data))
-          // }
           commit('loginSuccess', response.data)
+          return Promise.resolve(response.data)
+        })
+    },
+    loginPhoneOtp ({ commit }, user) {
+      return axios
+        .post('/radx-blockchain-ops-user/login/phone/otp', user)
+        .then(response => {
+          commit('loginPhoneOtpSuccess', response.data)
+          return Promise.resolve(response.data)
+        })
+    },
+    loginEmailOtp ({ commit }, user) {
+      return axios
+        .post('/radx-blockchain-ops-user/login/email/otp', user)
+        .then(response => {
+          commit('loginEmailOtpSuccess', response.data)
           return Promise.resolve(response.data)
         })
     },
@@ -37,7 +50,12 @@ export const auth = {
     }
   },
   mutations: {
-    loginSuccess (state, user) {
+    loginSuccess (state, user) {},
+    loginPhoneOtpSuccess (state, user) {
+      state.loggedIn = true
+      state.user = user
+    },
+    loginEmailOtpSuccess (state, user) {
       state.loggedIn = true
       state.user = user
     },
