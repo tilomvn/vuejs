@@ -17,7 +17,7 @@
   <div v-if="isOtpStep">
     <table>
       <tr>
-        <td><CustomInput v-model="otpCode" inputType="text" :label="otpLabel" /></td>
+        <td><CustomInput v-model="otpCode" inputType="text" :invalidMsg="invalidOtpCode" :label="otpLabel" /></td>
       </tr>
       <tr>
         <td><button @click="confirmOtp">Verify</button></td>
@@ -44,6 +44,7 @@ export default {
       twoFactorMethod: '',
       otpLabel: 'Otp Code',
       otpCode: '',
+      invalidOtpCode: '',
       errorMessage: '',
       appVerifier: null,
       confirmationResult: null,
@@ -81,6 +82,9 @@ export default {
       } else if (error.response && error.response.status === 401) {
         this.errorMessage = error.response.data.message
       } else {
+        if (error.constructor.name === 'FirebaseError') {
+          this.invalidOtpCode = error.code
+        }
         console.log(error)
       }
     },

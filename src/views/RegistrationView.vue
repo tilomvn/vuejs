@@ -29,7 +29,7 @@
   <div v-if="isPhoneNumberVerificationStep">
     <table>
       <tr>
-        <td><CustomInput v-model="otpCode" inputType="text" label="Otp Code" /></td>
+        <td><CustomInput v-model="otpCode" inputType="text" :invalidMsg="invalidOtpCode" label="Otp Code" /></td>
       </tr>
       <tr>
         <td><button @click="completeRegistration">Complete</button></td>
@@ -64,6 +64,7 @@ export default {
       isFormStep: true,
       isPhoneNumberVerificationStep: false,
       otpCode: '',
+      invalidOtpCode: '',
       appVerifier: null,
       confirmationResult: null,
       isCompleted: false
@@ -77,6 +78,9 @@ export default {
       } else if (error.response && error.response.status === 401) {
         this.errorMessage = error.response.message
       } else {
+        if (error.contructor.name === 'FirebaseError') {
+          this.invalidOtpCode = error.code
+        }
         console.log(error)
       }
     },

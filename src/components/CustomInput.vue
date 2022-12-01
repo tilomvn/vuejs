@@ -2,6 +2,7 @@
   <label>
     {{ label }}
     <input :type="inputType" v-model="inputValue" />
+    <label v-if="invalidMsg != ''">{{ invalidMsg }}</label>
   </label>
 </template>
 
@@ -11,7 +12,8 @@ export default {
   props: {
     label: String,
     inputType: String,
-    modelValue: String
+    modelValue: String,
+    invalidMsg: String
   },
   computed: {
     inputValue: {
@@ -31,5 +33,9 @@ export default {
     display: block;
     margin-top: 5px;
     margin-bottom: 10px;
+  }
+
+  label label {
+    color: red
   }
 </style>
