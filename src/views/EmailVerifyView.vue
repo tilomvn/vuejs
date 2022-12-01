@@ -1,6 +1,12 @@
 <template>
-  <CustomInput v-model="email" :invalidMsg="errorMessage" inputType="text" label="Email" />
-  <button @click="sendEmail">Send Email</button>
+  <table>
+    <tr>
+      <td><CustomInput v-model="email" :invalidMsg="errorMessage" inputType="text" label="Email" /></td>
+    </tr>
+    <tr>
+      <td><button @click="sendEmail">Send Email</button></td>
+    </tr>
+  </table>
   <h4 v-if="isSentEmail">Check your email to activate !</h4>
 </template>
 
@@ -33,3 +39,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+table {
+    display: initial;
+}
+
+td {
+    text-align: left;
+}
+</style>
