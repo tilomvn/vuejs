@@ -4,6 +4,7 @@
     <router-link to="/about">About</router-link> |
     <router-link to="/login">Login</router-link> |
     <router-link to="/register">Registration</router-link>
+    <router-link to="/email-verify">Verify Email</router-link>
   </nav>
   <router-view :sessionValidation="sessionValidation" />
 </template>

@@ -1,10 +1,11 @@
 const { initializeApp } = require('firebase/app')
 const { getAuth, signInWithCustomToken, signInWithPhoneNumber } = require('firebase/auth')
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyClBRTKp0rzdw0-aPlR-KkOBEq8CovsELs',
-  authDomain: 'crypto-swap-e608e.firebaseapp.com',
-  projectId: 'crypto-swap-e608e',
-  appId: 'crypto-swap-e608e'
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  appId: process.env.VUE_APP_FIREBASE_APP_ID
 }
 initializeApp(firebaseConfig)
 const auth = getAuth()

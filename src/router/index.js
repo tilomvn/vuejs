@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegistrationView from '../views/RegistrationView.vue'
+import EmailVerifyView from '../views/EmailVerifyView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegistrationView
+  },
+  {
+    path: '/email-verify',
+    name: 'email-verify',
+    component: EmailVerifyView
   }
 ]
 
