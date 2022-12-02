@@ -2,7 +2,6 @@
   <form v-if="isFormStep" @submit.prevent>
     <h2>{{ title }}</h2>
     <h3 v-if="errorMessage !== ''">{{ errorMessage }}</h3>
-    <label>{{ signIn }} <a @click="gotoLogin" href="#">Sign in</a></label>
     <br/>
     <table>
       <tr>
@@ -54,7 +53,6 @@ export default {
   data () {
     return {
       title: 'Create your account now !',
-      signIn: 'Already have CryptoSwap account ?',
       userName: 'Nick',
       phoneNumber: '+84965019428',
       email: 'hoka8x@gmail.com',
