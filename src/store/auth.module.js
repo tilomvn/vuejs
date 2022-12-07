@@ -46,7 +46,17 @@ export const auth = {
         })
     },
     logout ({ commit }) {
-      commit('logoutSuccess')
+      return axios
+        .post('/radx-blockchain-ops-user/logout/' + this.state.auth.user.deviceId, null, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + this.state.auth.user.accessToken
+          }
+        })
+        .then(response => {
+          commit('logoutSuccess')
+          return Promise.resolve(response.data)
+        })
     }
   },
   mutations: {
@@ -54,20 +64,22 @@ export const auth = {
     loginPhoneOtpSuccess (state, user) {
       state.loggedIn = true
       state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
     },
     loginEmailOtpSuccess (state, user) {
       state.loggedIn = true
       state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
     },
     logoutSuccess (state) {
       state.loggedIn = false
       state.user = null
+      localStorage.removeItem('user')
     },
     registerSuccess (state) {
       state.loggedIn = false
+      state.user = null
     },
-    registerDraftSuccess (state, data) {
-      console.log(data)
-    }
+    registerDraftSuccess (state, data) {}
   }
 }

@@ -37,8 +37,8 @@ export default {
   data () {
     return {
       title: 'Login Form',
-      userName: '',
-      password: '',
+      userName: '+84965019428',
+      password: 'Abc123456',
       userNameLabel: 'Username',
       passwordLabel: 'Password',
       twoFactorMethod: '',
@@ -69,7 +69,6 @@ export default {
           loginPath = 'auth/loginEmailOtp'
         }
         this.$store.dispatch(loginPath, user).then(response => {
-          localStorage.setItem('user', JSON.stringify(response.data))
           this.$router.push('/')
         },
         error => this.handleError(error))
@@ -79,7 +78,7 @@ export default {
       this.errorMessage = 'Internal Server Error'
       if (error.response && error.response.status === 400) {
         this.errorMessage = 'Bad Request'
-      } else if (error.response && error.response.status === 401) {
+      } else if ((error.response && error.response.status === 401) || (error.response && error.response.status === 403)) {
         this.errorMessage = error.response.data.message
       } else {
         if (error.constructor.name === 'FirebaseError') {
@@ -106,7 +105,9 @@ export default {
                 vm.isOtpStep = true
               }
             } else {
-              localStorage.setItem('user', response.data)
+              vm.$store.state.auth.user = response.data
+              vm.$store.state.auth.loggedIn = true
+              localStorage.setItem('user', JSON.stringify(response.data))
               vm.$router.push('/')
             }
           },

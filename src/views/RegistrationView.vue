@@ -55,7 +55,7 @@ export default {
       title: 'Create your account now !',
       userName: 'Nick',
       phoneNumber: '+84965019428',
-      email: 'hoka8x@gmail.com',
+      email: 'nghiahotrong89@gmail.com',
       password: 'Abc123456',
       referralCode: null,
       errorMessage: '',
@@ -74,7 +74,7 @@ export default {
       if (error.response && error.response.status === 400) {
         this.errorMessage = 'Bad Request'
       } else if (error.response && error.response.status === 401) {
-        this.errorMessage = error.response.message
+        this.errorMessage = error.response.data.message
       } else {
         if (error.contructor.name === 'FirebaseError') {
           this.invalidOtpCode = error.code
