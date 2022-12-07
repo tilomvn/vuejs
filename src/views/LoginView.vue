@@ -53,26 +53,26 @@ export default {
   },
   methods: {
     confirmOtp () {
-      this.confirmationResult.confirm(this.otpCode).then(response => {
-        let loginPath = ''
-        const user = {
-          uid: null,
-          email: null,
-          otpCode: null
-        }
-        if (this.twoFactorMethod === 'PHONE') {
+      const user = {
+        uid: null,
+        email: null,
+        otpCode: null
+      }
+      if (this.twoFactorMethod === 'PHONE') {
+        this.confirmationResult.confirm(this.otpCode).then(response => {
           user.uid = response.user.uid
-          loginPath = 'auth/loginPhoneOtp'
-        } else /* if (this.twoFactorMethod === 'EMAIL') */ {
-          user.email = this.userName
-          user.otpCode = this.otpCode
-          loginPath = 'auth/loginEmailOtp'
-        }
-        this.$store.dispatch(loginPath, user).then(response => {
+          this.$store.dispatch('auth/loginPhoneOtp', user).then(response => {
+            this.$router.push('/')
+          },
+          error => this.handleError(error))
+        }).catch(error => this.handleError(error))
+      } else /* if (this.twoFactorMethod === 'EMAIL') */ {
+        user.email = this.userName
+        user.otpCode = this.otpCode
+        this.$store.dispatch('auth/loginEmailOtp', user).then(response => {
           this.$router.push('/')
-        },
-        error => this.handleError(error))
-      }).catch(error => this.handleError(error))
+        })
+      }
     },
     handleError (error) {
       this.errorMessage = 'Internal Server Error'
