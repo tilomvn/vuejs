@@ -17,7 +17,7 @@ export const auth = {
       return axios
         .post('/radx-blockchain-ops-user/login/phone/otp', user)
         .then(response => {
-          commit('loginPhoneOtpSuccess', response.data)
+          commit('loginPhoneOtpSuccess', response.data.data)
           return Promise.resolve(response.data)
         })
     },
@@ -25,7 +25,7 @@ export const auth = {
       return axios
         .post('/radx-blockchain-ops-user/login/email/otp', user)
         .then(response => {
-          commit('loginEmailOtpSuccess', response.data)
+          commit('loginEmailOtpSuccess', response.data.data)
           return Promise.resolve(response.data)
         })
     },

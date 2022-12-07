@@ -56,8 +56,8 @@ export default {
         if (error.contructor.name === 'FirebaseError') {
           this.invalidOtpCode = error.code
         }
-        console.log(error)
       }
+      console.log(error)
     }
   }
 }
