@@ -31,6 +31,9 @@
         <td><CustomInput v-model="otpCode" inputType="text" :invalidMsg="invalidOtpCode" label="Otp Code" /></td>
       </tr>
       <tr>
+        <td><CustomInput v-model="emailOtpCode" inputType="text" :invalidMsg="invalidEmailOtpCode" label="Email Otp Code" /></td>
+      </tr>
+      <tr>
         <td><button @click="completeRegistration">Complete</button></td>
       </tr>
     </table>
@@ -62,7 +65,9 @@ export default {
       isFormStep: true,
       isPhoneNumberVerificationStep: false,
       otpCode: '',
+      emailOtpCode: '56986',
       invalidOtpCode: '',
+      invalidEmailOtpCode: '',
       appVerifier: null,
       confirmationResult: null,
       isCompleted: false
@@ -76,7 +81,7 @@ export default {
       } else if (error.response && error.response.status === 401) {
         this.errorMessage = error.response.data.message
       } else {
-        if (error.contructor.name === 'FirebaseError') {
+        if (error.contructor && error.contructor.name === 'FirebaseError') {
           this.invalidOtpCode = error.code
         }
         console.log(error)
@@ -85,7 +90,8 @@ export default {
     completeRegistration () {
       this.confirmationResult.confirm(this.otpCode).then(response => {
         this.$store.dispatch('auth/register', {
-          uid: response.user.uid
+          uid: response.user.uid,
+          emailVerificationCode: this.emailOtpCode
         }).then(response => {
           this.isCompleted = true
           this.isPhoneNumberVerificationStep = false

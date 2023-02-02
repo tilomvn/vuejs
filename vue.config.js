@@ -8,7 +8,7 @@ module.exports = defineConfig({
         "/radx-blockchain-ops-user": {
           ws: true,
           changeOrigin: true,
-          target: 'http://localhost:7000'
+          target: 'https://api.crypto.testdemo.dev'
         }
       }
     }

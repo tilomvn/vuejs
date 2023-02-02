@@ -39,6 +39,7 @@ export default {
       title: 'Login Form',
       userName: '+84965019428',
       password: 'Abc123456',
+      requestIpAddress: '125.144.12.156',
       userNameLabel: 'Username',
       passwordLabel: 'Password',
       twoFactorMethod: '',
@@ -92,7 +93,7 @@ export default {
       this.appVerifier = new RecaptchaVerifier('sign-in-button', {
         size: 'invisible',
         callback: function (response) {
-          vm.$store.dispatch('auth/login', { userName: vm.userName, password: vm.password }).then((response) => {
+          vm.$store.dispatch('auth/login', { userName: vm.userName, password: vm.password, requestIpAddress: vm.requestIpAddress }).then((response) => {
             if (response.status === 202) {
               vm.twoFactorMethod = response.data.twoFactorMethod
               if (vm.twoFactorMethod === 'PHONE') {
