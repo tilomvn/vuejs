@@ -65,7 +65,7 @@ export default {
       isFormStep: true,
       isPhoneNumberVerificationStep: false,
       otpCode: '',
-      emailOtpCode: '56986',
+      emailOtpCode: '',
       invalidOtpCode: '',
       invalidEmailOtpCode: '',
       appVerifier: null,
