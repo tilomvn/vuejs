@@ -37,7 +37,7 @@
   </div>
   <div v-if="isCompleted">
     <img alt="Vue logo" src="../assets/logo.png">
-    <h2>Thank you for buying crypto !</h2>
+    <h2>Thank you for deposit fiat !</h2>
   </div>
 </template>
 
