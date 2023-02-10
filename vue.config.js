@@ -8,17 +8,20 @@ module.exports = defineConfig({
         "/radx-blockchain-ops-user": {
           ws: true,
           changeOrigin: true,
-          target: 'http://localhost:7000'
+          target: 'https://api.crypto.testdemo.dev'
+          //target: 'http://localhost:7000'
         },
         "/radx-blockchain-ops-trading": {
           ws: true,
           changeOrigin: true,
-          target: 'http://localhost:7000'
+          target: 'https://api.crypto.testdemo.dev'
+          //target: 'http://localhost:7000'
         },
         "/radx-blockchain-ops-payment": {
           ws: true,
           changeOrigin: true,
-          target: 'http://localhost:7000'
+          target: 'https://api.crypto.testdemo.dev'
+          //target: 'http://localhost:7000'
         }
       }
     }

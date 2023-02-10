@@ -6,6 +6,7 @@ import RegistrationView from '../views/RegistrationView.vue'
 import EmailVerifyView from '../views/EmailVerifyView.vue'
 import BuyCryptoView from '../views/BuyCryptoView.vue'
 import DepositFiatView from '../views/DepositFiatView.vue'
+import CloseOrderCryptoView from '../views/CloseOrderCryptoView.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/deposit-fiat',
     name: 'deposit-fiat',
     component: DepositFiatView
+  },
+  {
+    path: '/close-order',
+    name: 'close-order',
+    component: CloseOrderCryptoView
   }
 ]
 

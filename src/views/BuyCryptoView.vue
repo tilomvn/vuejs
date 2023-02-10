@@ -45,7 +45,7 @@ import MasterView from './MasterView.vue'
 
 export default {
   mixins: [MasterView],
-  name: 'ByOrderBiew',
+  name: 'BuyCryptoView',
   data () {
     return {
       title: 'Buy crypto',
@@ -68,6 +68,7 @@ export default {
   },
   methods: {
     handleError (error) {
+      console.log(error)
       this.errorMessage = 'Internal Server Error'
       if (error.response && error.response.status === 400) {
         this.errorMessage = 'Bad Request'
@@ -77,7 +78,6 @@ export default {
         if (error.contructor && error.contructor.name === 'FirebaseError') {
           this.invalidOtpCode = error.code
         }
-        console.log(error)
       }
     },
     completeBuy () {

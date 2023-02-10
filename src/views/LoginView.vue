@@ -76,6 +76,7 @@ export default {
       }
     },
     handleError (error) {
+      console.log(error)
       this.errorMessage = 'Internal Server Error'
       if (error.response && error.response.status === 400) {
         this.errorMessage = 'Bad Request'
@@ -85,7 +86,6 @@ export default {
         if (error.constructor.name === 'FirebaseError') {
           this.invalidOtpCode = error.code
         }
-        console.log(error)
       }
     },
     initReCaptcha () {

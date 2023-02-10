@@ -17,6 +17,18 @@ export const crypto = {
           return Promise.resolve(response.data)
         })
     },
+    closeOrder ({ commit }, data) {
+      return axios
+        .post('/radx-blockchain-ops-trading/trading/crypto/order/close', data, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + this.state.auth.user.accessToken
+          }
+        }).then(response => {
+          commit('closeOrderSuccess')
+          return Promise.resolve(response.data)
+        })
+    },
     depositFiat ({ commit }, data) {
       return axios
         .post('/radx-blockchain-ops-payment/wallet/fiat/deposit', data, {
@@ -45,6 +57,7 @@ export const crypto = {
   mutations: {
     buyCrypto (state) {},
     depositFiat (state) {},
-    completeDepositFiat (state) {}
+    completeDepositFiat (state) {},
+    closeOrderSuccess (state) {}
   }
 }

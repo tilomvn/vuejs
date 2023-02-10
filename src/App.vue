@@ -6,6 +6,7 @@
     <router-link to="/register">Registration</router-link> |
     <router-link to="/buy-crypto">Buy Crypto</router-link> |
     <router-link to="/deposit-fiat">Deposit Fiat</router-link> |
+    <router-link to="/close-order">Close Order</router-link> |
     <router-link to="/verify-email">Verify Email</router-link>
   </nav>
   <router-view :sessionValidation="sessionValidation" />
